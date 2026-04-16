@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script id="codepen-helper" src="https://public.codepenassets.com/preview/index.3d9807ba2f99c7cd6285a0bb14172f.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WKNS - Wiki Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --negro: #000000;
+            --rojo: #ff0000;
+            --gris-dark: #0a0a0a;
+            --gris-light: #1a1a1a;
+            --texto: #ffffff;
+        }
+
+        body {
+            background-color: var(--negro);
+            color: var(--texto);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--rojo);
+            background: linear-gradient(to bottom, #1a0000, var(--negro));
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--rojo);
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+
+        header p { letter-spacing: 5px; color: #888; text-transform: uppercase; font-size: 0.8rem; }
+
+        /* LOGIN BAR */
+        .login-bar {
+            background: var(--gris-dark);
+            padding: 10px;
+            text-align: right;
+            border-bottom: 1px solid #222;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: var(--rojo);
+            border: 1px solid var(--rojo);
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        .btn-login:hover { background: var(--rojo); color: white; }
+
+        /* FORMULARIO (Oculto por defecto) */
+        #admin-section {
+            display: none;
+            background: var(--gris-light);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 1px solid #333;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+        }
+
+        .inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        input, textarea {
+            background: var(--negro);
+            border: 1px solid #444;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        input:focus { border-color: var(--rojo); outline: none; }
+
+        .btn-save {
+            background: var(--rojo);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+
+        /* TARJETAS */
+        .wiki-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--gris-dark);
+            border: 1px solid #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.4s;
+            position: relative;
+        }
+
+        .card:hover { border-color: var(--rojo); transform: translateY(-10px); }
+
+        .card-header {
+            height: 100px;
+            background: linear-gradient(45deg, #300, #000);
+            position: relative;
+        }
+
+        .profile-img {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            border: 4px solid var(--rojo);
+            object-fit: cover;
+            position: absolute;
+            bottom: -50px;
+            left: 20px;
+            background: var(--negro);
+        }
+
+        .card-body { padding: 60px 20px 20px 20px; }
+        .card-body h3 { margin: 0; font-family: 'Orbitron', sans-serif; color: var(--rojo); }
+        .ws-name { color: #888; font-size: 0.9rem; }
+
+        .info-box { margin-top: 15px; font-size: 0.9rem; border-top: 1px solid #222; padding-top: 15px; }
+        .info-box b { color: var(--rojo); }
+
+        .bio-box {
+            background: #050505;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #ccc;
+            border-left: 2px solid var(--rojo);
+        }
+
+        .btn-ws {
+            display: block;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .admin-actions {
+            display: none; /* Se activa con el login */
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-admin { flex: 1; padding: 5px; border: none; border-radius: 3px; cursor: pointer; color: white; }
+        .edit { background: #444; }
+        .delete { background: #600; }
+
+        #logout-btn { display: none; }
+
+    </style>
+</head>
+<body>
+
+<div class="login-bar">
+    <button id="login-btn" class="btn-login" onclick="login()">ACCESO ADMIN</button>
+    <button id="logout-btn" class="btn-login" onclick="logout()">SALIR</button>
+</div>
+
+<header>
+    <h1>wiki_nosexd</h1>
+    <p>Comunidad Nose Xd - Wiki Oficial</p>
+</header>
+
+<div class="container">
+    
+    <div id="admin-section">
+        <h2 id="form-title" style="color:var(--rojo); margin-top:0">Agregar Miembro a WKNS</h2>
+        <div class="inputs-grid">
+            <input type="text" id="nombre" placeholder="Nombre Real">
+            <input type="text" id="wsNombre" placeholder="Nombre en WhatsApp">
+            <input type="text" id="foto" placeholder="URL Foto (Direct Link)">
+            <input type="text" id="numero" placeholder="Número (ej: 5491122334455)">
+            <input type="text" id="desc" placeholder="Descripción corta (ej: El más pro)">
+            <input type="text" id="rol" placeholder="Rol (Líder, Miembro, MVP)">
+        </div>
+        <textarea id="bio" placeholder="Biografía completa..." style="width: 100%; margin-top: 15px; height: 100px; box-sizing: border-box;"></textarea>
+        <input type="hidden" id="edit-id">
+        <button class="btn-save" onclick="guardar()">Guardar en la Wiki</button>
+    </div>
+
+    <div id="wiki-list" class="wiki-grid">
+        <p style="text-align:center; color:#444;">Cargando base de datos...</p>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJIqZDKmotCe0nEenU-m6f_Luyy0gaZ2w",
+      authDomain: "wixd-nose.firebaseapp.com",
+      databaseURL: "https://wixd-nose-default-rtdb.firebaseio.com",
+      projectId: "wixd-nose",
+      storageBucket: "wixd-nose.firebasestorage.app",
+      messagingSenderId: "721944033684",
+      appId: "1:721944033684:web:43d3cf05623890f4c37781"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dbRef = ref(db, 'miembros');
+
+    // --- SISTEMA DE LOGIN SIMPLE ---
+    const PASS_CORRECTA = "NoSeXd2026@_"; // CAMBIA ESTO POR TU CONTRASEÑA
+
+    window.login = () => {
+        const pass = prompt("Introduce la contraseña de Admin:");
+        if(pass === PASS_CORRECTA) {
+            document.getElementById('admin-section').style.display = 'block';
+            document.getElementById('login-btn').style.display = 'none';
+            document.getElementById('logout-btn').style.display = 'inline-block';
+            sessionStorage.setItem('admin', 'true');
+            renderAdminTools(true);
+        } else {
+            alert("Contraseña incorrecta");
+        }
+    };
+
+    window.logout = () => {
+        sessionStorage.removeItem('admin');
+        location.reload();
+    };
+
+    function renderAdminTools(show) {
+        const tools = document.querySelectorAll('.admin-actions');
+        tools.forEach(el => el.style.display = show ? 'flex' : 'none');
+    }
+
+    // --- FUNCIONES DE DATOS ---
+    window.guardar = () => {
+        const id = document.getElementById('edit-id').value;
+        const data = {
+            nombre: document.getElementById('nombre').value,
+            wsNombre: document.getElementById('wsNombre').value,
+            foto: document.getElementById('foto').value || "https://via.placeholder.com/150",
+            numero: document.getElementById('numero').value,
+            desc: document.getElementById('desc').value,
+            rol: document.getElementById('rol').value,
+            bio: document.getElementById('bio').value
+        };
+
+        if(id) {
+            update(ref(db, 'miembros/' + id), data);
+            document.getElementById('edit-id').value = "";
+            document.getElementById('form-title').innerText = "Agregar Miembro a WXNS";
+        } else {
+            push(dbRef, data);
+        }
+        
+        document.querySelectorAll('input, textarea').forEach(i => i.value = "");
+    };
+
+    onValue(dbRef, (snapshot) => {
+        const container = document.getElementById('wiki-list');
+        container.innerHTML = "";
+        const isAdmin = sessionStorage.getItem('admin') === 'true';
+
+        snapshot.forEach((child) => {
+            const user = child.val();
+            const key = child.key;
+            
+            container.innerHTML += `
+                <div class="card">
+                    <div class="card-header">
+                        <img src="${user.foto}" class="profile-img">
+                    </div>
+                    <div class="card-body">
+                        <h3>${user.nombre}</h3>
+                        <div class="ws-name">@${user.wsNombre} | ${user.rol}</div>
+                        
+                        <div class="info-box">
+                            <div><b>Descripción:</b> ${user.desc}</div>
+                            <div class="bio-box">${user.bio}</div>
+                        </div>
+
+                        <a href="https://wa.me/${user.numero}" target="_blank" class="btn-ws">WhatsApp</a>
+
+                        <div class="admin-actions" style="display: ${isAdmin ? 'flex' : 'none'}">
+                            <button class="btn-admin edit" onclick="prepararEdit('${key}', '${user.nombre}', '${user.wsNombre}', '${user.foto}', '${user.numero}', '${user.desc}', '${user.rol}', '${user.bio.replace(/\n/g, ' ')}')">EDITAR</button>
+                            <button class="btn-admin delete" onclick="eliminar('${key}')">BORRAR</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    });
+
+    window.eliminar = (id) => { if(confirm('¿Eliminar este miembro de la base de datos?')) remove(ref(db, 'miembros/' + id)); };
+
+    window.prepararEdit = (id, n, ws, f, num, d, r, b) => {
+        document.getElementById('edit-id').value = id;
+        document.getElementById('nombre').value = n;
+        document.getElementById('wsNombre').value = ws;
+        document.getElementById('foto').value = f;
+        document.getElementById('numero').value = num;
+        document.getElementById('desc').value = d;
+        document.getElementById('rol').value = r;
+        document.getElementById('bio').value = b;
+        document.getElementById('form-title').innerText = "Editando a: " + n;
+        window.scrollTo(0,0);
+    };
+</script>
+
+</body>
+</html>
