@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WKNS - Wiki Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --negro: #000000;
+            --rojo: #ff0000;
+            --gris-dark: #0a0a0a;
+            --gris-light: #1a1a1a;
+            --texto: #ffffff;
+        }
+
+        body {
+            background-color: var(--negro);
+            color: var(--texto);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* BARRA DE NAVEGACIÓN NUEVA */
+        .nav-links {
+            background: var(--gris-dark);
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--rojo); }
+
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
+
+        /* HEADER MODIFICADO CON LOGO */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--rojo);
+            background: linear-gradient(to bottom, #1a0000, var(--negro));
+        }
+
+        .logo-img {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            border: 2px solid var(--rojo);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--rojo);
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+
+        header p { letter-spacing: 5px; color: #888; text-transform: uppercase; font-size: 0.8rem; }
+
+        /* LOGIN BAR */
+        .login-bar {
+            background: var(--gris-dark);
+            padding: 10px;
+            text-align: right;
+            border-bottom: 1px solid #222;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: var(--rojo);
+            border: 1px solid var(--rojo);
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        .btn-login:hover { background: var(--rojo); color: white; }
+
+        /* FORMULARIO */
+        #admin-section {
+            display: none;
+            background: var(--gris-light);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 1px solid #333;
+        }
+
+        .inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        input, textarea {
+            background: var(--negro);
+            border: 1px solid #444;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .btn-save {
+            background: var(--rojo);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+
+        /* TARJETAS */
+        .wiki-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--gris-dark);
+            border: 1px solid #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+
+        .card:hover { border-color: var(--rojo); transform: translateY(-10px); }
+
+        .card-header { height: 100px; background: linear-gradient(45deg, #300, #000); position: relative; }
+
+        .profile-img {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            border: 4px solid var(--rojo);
+            object-fit: cover;
+            position: absolute;
+            bottom: -50px;
+            left: 20px;
+            background: var(--negro);
+        }
+
+        .card-body { padding: 60px 20px 20px 20px; }
+        .card-body h3 { margin: 0; color: var(--rojo); font-family: 'Orbitron'; }
+
+        .bio-box {
+            background: #050505;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #ccc;
+            border-left: 2px solid var(--rojo);
+        }
+
+        .btn-ws {
+            display: block;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .admin-actions { display: none; gap: 10px; margin-top: 10px; }
+        .btn-admin { flex: 1; padding: 5px; border: none; border-radius: 3px; cursor: pointer; color: white; }
+        .edit { background: #444; }
+        .delete { background: #600; }
+
+    </style>
+</head>
+<body>
+
+<nav class="nav-links">
+    <a href="https://www.google.com" target="_blank">GOOGLE</a>
+    <a href="https://www.youtube.com" target="_blank">YOUTUBE</a>
+    <a href="#">REGLAS</a>
+    <h1>REGLAS-> </h1>
+    <h3>no mandar cosas funables</h3>
+    <h3>No Hacer Spam</h3>
+    <h3>No enviar mensajes a altas horas de la noche!</h3>
+    <h3>Modificar esto en caso de texto extra</h3>
+</nav>
+
+<div class="login-bar">
+    <button id="login-btn" class="btn-login" onclick="login()">ACCESO ADMIN</button>
+    <button id="logout-btn" class="btn-login" style="display:none" onclick="logout()">SALIR</button>
+</div>
+
+<header>
+    <img src="data:image/jpeg;base64,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" alt="Logo WKNS" class="logo-img">
+    <h1>wiki_nosexd</h1>
+    <p>Comunidad Nose Xd - Wiki Oficial</p>
+</header>
+
+<div class="container">
+    <div id="admin-section">
+        <h2 id="form-title" style="color:var(--rojo); margin-top:0">Agregar Miembro</h2>
+        <div class="inputs-grid">
+            <input type="text" id="nombre" placeholder="Nombre Real">
+            <input type="text" id="wsNombre" placeholder="Nombre en WhatsApp">
+            <input type="text" id="foto" placeholder="URL Foto">
+            <input type="text" id="numero" placeholder="Número">
+            <input type="text" id="desc" placeholder="Descripción corta">
+            <input type="text" id="rol" placeholder="Rol">
+        </div>
+        <textarea id="bio" placeholder="Biografía..." style="width: 100%; margin-top: 15px; height: 100px; box-sizing: border-box;"></textarea>
+        <input type="hidden" id="edit-id">
+        <button class="btn-save" onclick="guardar()">Guardar</button>
+    </div>
+
+    <div id="wiki-list" class="wiki-grid">
+        <p style="text-align:center; color:#444;">Procesando Informacion desde el Servidor Aguarde un momento...</p>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJIqZDKmotCe0nEenU-m6f_Luyy0gaZ2w",
+      authDomain: "wixd-nose.firebaseapp.com",
+      databaseURL: "https://wixd-nose-default-rtdb.firebaseio.com",
+      projectId: "wixd-nose",
+      storageBucket: "wixd-nose.firebasestorage.app",
+      messagingSenderId: "721944033684",
+      appId: "1:721944033684:web:43d3cf05623890f4c37781"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dbRef = ref(db, 'miembros');
+
+    const PASS_CORRECTA = "NoSeXd2026@_";
+
+    // Hacer funciones globales para que el HTML las vea
+    window.login = () => {
+        const pass = prompt("Contraseña de Admin:");
+        if(pass === PASS_CORRECTA) {
+            sessionStorage.setItem('admin', 'true');
+            location.reload();
+        } else { alert("Error"); }
+    };
+
+    window.logout = () => {
+        sessionStorage.removeItem('admin');
+        location.reload();
+    };
+
+    const isAdmin = sessionStorage.getItem('admin') === 'true';
+    if(isAdmin) {
+        document.getElementById('admin-section').style.display = 'block';
+        document.getElementById('login-btn').style.display = 'none';
+        document.getElementById('logout-btn').style.display = 'inline-block';
+    }
+
+    window.guardar = () => {
+        const id = document.getElementById('edit-id').value;
+        const data = {
+            nombre: document.getElementById('nombre').value,
+            wsNombre: document.getElementById('wsNombre').value,
+            foto: document.getElementById('foto').value || "https://via.placeholder.com/150",
+            numero: document.getElementById('numero').value,
+            desc: document.getElementById('desc').value,
+            rol: document.getElementById('rol').value,
+            bio: document.getElementById('bio').value
+        };
+        if(id) { update(ref(db, 'miembros/' + id), data); } 
+        else { push(dbRef, data); }
+        location.reload();
+    };
+
+    onValue(dbRef, (snapshot) => {
+        const container = document.getElementById('wiki-list');
+        container.innerHTML = "";
+        snapshot.forEach((child) => {
+            const user = child.val();
+            const key = child.key;
+            container.innerHTML += `
+                <div class="card">
+                    <div class="card-header"><img src="${user.foto}" class="profile-img"></div>
+                    <div class="card-body">
+                        <h3>${user.nombre}</h3>
+                        <div style="color:#888">@${user.wsNombre} | ${user.rol}</div>
+                        <div class="bio-box">${user.bio}</div>
+                        <a href="https://wa.me/${user.numero}" class="btn-ws">WhatsApp</a>
+                        <div class="admin-actions" style="display:${isAdmin ? 'flex' : 'none'}">
+                            <button class="btn-admin edit" onclick="prepararEdit('${key}', '${user.nombre}', '${user.wsNombre}', '${user.foto}', '${user.numero}', '${user.desc}', '${user.rol}', '${user.bio}')">EDITAR</button>
+                            <button class="btn-admin delete" onclick="eliminar('${key}')">BORRAR</button>
+                        </div>
+                    </div>
+                </div>`;
+        });
+    });
+
+    window.eliminar = (id) => { if(confirm('¿Borrar?')) remove(ref(db, 'miembros/' + id)); };
+    window.prepararEdit = (id, n, ws, f, num, d, r, b) => {
+        document.getElementById('edit-id').value = id;
+        document.getElementById('nombre').value = n;
+        document.getElementById('wsNombre').value = ws;
+        document.getElementById('foto').value = f;
+        document.getElementById('numero').value = num;
+        document.getElementById('desc').value = d;
+        document.getElementById('rol').value = r;
+        document.getElementById('bio').value = b;
+        window.scrollTo(0,0);
+    };
+</script>
+</body>
+</html>
